@@ -4,7 +4,7 @@
   "description": "My Github.io page",
   "main": "index.js",
   "scripts": {
-    "build": "rm build/*; ./node_modules/.bin/webpack --config ./webpack-prod.config.js --progress --colors",
+    "build": "rm build/*; ./node_modules/.bin/webpack --config ./webpack-prod.config.js --progress --colors && cp -R build/* ../",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository" : {

@@ -7,6 +7,10 @@
     "build": "rm build/*; ./node_modules/.bin/webpack --config ./webpack-prod.config.js --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/CalebMorris/calebmorris.github.io"
+  },
   "author": "Caleb Morris",
   "license": "MIT",
   "devDependencies": {

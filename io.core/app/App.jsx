@@ -13,6 +13,7 @@ module.exports = React.createClass({
   render: function () {
     return (
       <div>
+        <Header />
         <div className="row">
 
           <div className="col s3">

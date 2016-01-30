@@ -20772,6 +20772,7 @@
 	    return React.createElement(
 	      'div',
 	      null,
+	      React.createElement(Header, null),
 	      React.createElement(
 	        'div',
 	        { className: 'row' },
@@ -20806,9 +20807,48 @@
 
 	  render: function render() {
 	    return React.createElement(
-	      'div',
-	      { className: 'header' },
-	      'webpack react starter kit - header'
+	      'nav',
+	      { className: 'blue darken-3' },
+	      React.createElement(
+	        'div',
+	        { className: 'nav-wrapper' },
+	        React.createElement(
+	          'a',
+	          { href: '#', className: 'brand-logo center' },
+	          'Caleb Morris'
+	        ),
+	        React.createElement(
+	          'ul',
+	          { id: 'nav-mobile', className: 'left hide-on-med-and-down' },
+	          React.createElement(
+	            'li',
+	            null,
+	            React.createElement(
+	              'a',
+	              { href: 'sass.html' },
+	              'Sass(FILLER)'
+	            )
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            React.createElement(
+	              'a',
+	              { href: 'badges.html' },
+	              'Components(FILLER)'
+	            )
+	          ),
+	          React.createElement(
+	            'li',
+	            null,
+	            React.createElement(
+	              'a',
+	              { href: 'collapsible.html' },
+	              'JavaScript(FILLER)'
+	            )
+	          )
+	        )
+	      )
 	    );
 	  }
 

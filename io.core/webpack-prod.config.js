@@ -11,6 +11,13 @@ module.exports = {
     path: './build',
     filename: './bundle.js',
   },
+  devtool:'source-map',
+  devServer: {
+    // proxy calls to api to our own node server backend
+    proxy: {
+      '/api/*': 'http://localhost:5000/'
+    }
+  },
   module: {
     loaders: commonConfig.loaders,
   },

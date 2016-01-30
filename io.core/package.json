@@ -4,15 +4,24 @@
   "description": "My Github.io page",
   "main": "index.js",
   "scripts": {
+    "dev-server": "nodemon server/index.js --watch server",
+    "dev-web": "webpack-dev-server --config ./webpack-dev.config.js --hot --progress --colors --content-base build", 
+    "dev": "nodemon server/index.js --watch server & webpack-dev-server --config ./webpack-dev.config.js --hot --progress --colors --content-base build",
     "build": "rm build/*; ./node_modules/.bin/webpack --config ./webpack-prod.config.js --progress --colors && cp -R build/* ../",
+    "start": "node server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/CalebMorris/calebmorris.github.io"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CalebMorris/calebmorris.github.io"
   },
   "author": "Caleb Morris",
   "license": "MIT",
+  "dependencies": {
+    "compression": "^1.5.0",
+    "cors": "^2.7.1",
+    "express": "^4.12.4"
+  },
   "devDependencies": {
     "autoprefixer-loader": "^2.0.0",
     "babel-core": "^5.5.8",

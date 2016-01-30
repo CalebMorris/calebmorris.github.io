@@ -91,8 +91,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(4)();
-	exports.push([module.id, "@import url(//fonts.googleapis.com/css?family=Roboto);", ""]);
-	exports.push([module.id, "\n* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: 'Roboto', sans-serif; }\n\n.app {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center; }\n\n.header {\n  -webkit-flex-wrap: nowrap;\n      -ms-flex-wrap: nowrap;\n          flex-wrap: nowrap;\n  padding-top: 8px;\n  padding-bottom: 8px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  border-bottom: 1px solid #e1e1e1;\n  background-color: #fAfAfA; }\n", ""]);
+	exports.push([module.id, "* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: 'Roboto', sans-serif; }\n\n.app {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center; }\n\n.header {\n  -webkit-flex-wrap: nowrap;\n      -ms-flex-wrap: nowrap;\n          flex-wrap: nowrap;\n  padding-top: 8px;\n  padding-bottom: 8px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  border-bottom: 1px solid #e1e1e1;\n  background-color: #fAfAfA; }\n", ""]);
 
 /***/ },
 /* 4 */
@@ -20773,9 +20772,21 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(Header, null),
-	      React.createElement(Content, null),
-	      React.createElement(Favicon, { url: faviconUrl })
+	      React.createElement(
+	        'div',
+	        { className: 'row' },
+	        React.createElement(
+	          'div',
+	          { className: 'col s3' },
+	          'Test Nav'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'col s9' },
+	          'Test Content'
+	        ),
+	        React.createElement(Favicon, { url: faviconUrl })
+	      )
 	    );
 	  }
 

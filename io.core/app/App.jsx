@@ -13,9 +13,18 @@ module.exports = React.createClass({
   render: function () {
     return (
       <div>
-        <Header/>
-        <Content/>
-        <Favicon url={ faviconUrl }/>
+        <div className="row">
+
+          <div className="col s3">
+            Test Nav
+          </div>
+
+          <div className="col s9">
+            Test Content
+          </div>
+
+          <Favicon url={ faviconUrl }/>
+        </div>
       </div>
     );
   },

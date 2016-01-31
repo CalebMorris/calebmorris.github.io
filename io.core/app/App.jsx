@@ -14,17 +14,9 @@ module.exports = React.createClass({
     return (
       <div>
         <Header />
-        <div className="row">
-
-          <div className="col s3">
-            Test Nav
-          </div>
-
-          <div className="col s9">
-            Test Content
-          </div>
-
-          <Favicon url={ faviconUrl }/>
+        <Favicon url={ faviconUrl }/>
+        <div className="Content">
+          {this.props.children || <Content />}
         </div>
       </div>
     );

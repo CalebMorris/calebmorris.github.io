@@ -1,5 +1,7 @@
 var React = require('react');
 
+import { Link } from 'react-router'
+
 module.exports = React.createClass({
   displayName: 'Content',
 
@@ -20,11 +22,16 @@ module.exports = React.createClass({
 
   render: function () {
     return (
-      <div>
-        <p>
-          {'Here is some Content '}<b ref='serverResponse'>{this.state.serverData || 'Click the button to hit the API'}</b>
-        </p>
-        <input ref='refreshButton' type='button' onClick={this.refreshData } value='Hit the server'></input>
+      <div className="row">
+
+        <div className="col s3">
+          <Link to="/projects">Projects</Link>
+        </div>
+
+        <div className="col s9">
+          Test Content
+        </div>
+
       </div>
     );
   }

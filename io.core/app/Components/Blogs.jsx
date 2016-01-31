@@ -1,12 +1,12 @@
 var React = require('react');
 
 module.exports = React.createClass({
-  displayName: 'Projects',
+  displayName: 'Blogs',
 
   render: function () {
     return (
       <div>
-        {'Test Project Content Right'}
+        {'Test Blog Content Right'}
       </div>
     );
   }
@@ -14,9 +14,9 @@ module.exports = React.createClass({
 });
 
 module.exports.navMenu = {
-  header : { text : 'Projects', link: '/projects' },
+  header : { text : 'Blogs', link: '/blogs' },
   subitems : [
-    { text : 'testSub1' },
-    { text : 'testSub2' }
+    { text : 'testBlog1' },
+    { text : 'testBlog2' }
   ],
 };

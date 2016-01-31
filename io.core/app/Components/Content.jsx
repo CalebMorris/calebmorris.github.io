@@ -1,35 +1,58 @@
-var React = require('react');
+import React from 'react';
+import { Link } from 'react-router';
+import NavMenu from '../Components/NavMenu.jsx';
 
-import { Link } from 'react-router'
+import Projects from '../Components/Projects.jsx';
 
 module.exports = React.createClass({
   displayName: 'Content',
 
-  getInitialState: function() {
-    return { serverData: null };
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
   },
 
-  refreshData: function() {
-    // replace this with your favourite library for doing ajax calls
-    var xhr = new XMLHttpRequest();
-    xhr.open('get', '/api/currentTime', true);
-    xhr.onload = () => {
-      var data = JSON.parse(xhr.responseText);
-      this.setState({ serverData: data.time });
-    };
-    xhr.send();
+  applyIsActiveToLinks : function(menus) {
+    if (! menus) return menus;
+
+    const isActive = (url) => {
+      return url && this.context.router.isActive(url);
+    }
+
+    for (var menu of menus) {
+      menu.header.isActive = isActive(menu.header.link);
+      if (submenu) {
+        for(var submenu of menu.subitems) {
+          submenu.isActive = isActive(submenu.link);
+        }
+      }
+    }
+
+    return menus;
   },
 
   render: function () {
+    var menus = [
+      Projects.navMenu,
+      {
+        header : { text : 'Blarg' }
+      }
+    ];
+
+    menus = this.applyIsActiveToLinks(menus);
+
     return (
       <div className="row">
 
-        <div className="col s3">
-          <Link to="/projects">Projects</Link>
-        </div>
+        <NavMenu menus={menus} />
 
-        <div className="col s9">
-          Test Content
+        <div className="row">
+
+          <div className="col s10 offset-s2">
+
+            {this.props.children}
+
+          </div>
+
         </div>
 
       </div>

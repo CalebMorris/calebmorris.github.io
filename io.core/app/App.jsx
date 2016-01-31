@@ -1,7 +1,7 @@
 var React = require('react');
 
-var Header = require('./Components/Header.jsx');
 var Content = require('./Components/Content.jsx');
+var Header = require('./Components/Header.jsx');
 var Favicon = require('react-favicon');
 
 var faviconUrl = require('./Assets/favicon.ico');

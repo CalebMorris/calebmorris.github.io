@@ -70,11 +70,7 @@
 	  React.createElement(
 	    _reactRouter.Route,
 	    { path: '/', component: App },
-	    React.createElement(
-	      _reactRouter.Route,
-	      { component: Content },
-	      React.createElement(_reactRouter.Route, { path: 'projects', component: Projects })
-	    ),
+	    React.createElement(_reactRouter.Route, { path: 'projects', component: Projects }),
 	    React.createElement(_reactRouter.Route, { path: '*', component: NoMatch })
 	  )
 	), document.getElementById('body'));
@@ -25444,7 +25440,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(218)();
-	exports.push([module.id, "* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: 'Roboto', sans-serif; }\n\n.app {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center; }\n\n.header {\n  -webkit-flex-wrap: nowrap;\n      -ms-flex-wrap: nowrap;\n          flex-wrap: nowrap;\n  padding-top: 8px;\n  padding-bottom: 8px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  border-bottom: 1px solid #e1e1e1;\n  background-color: #fAfAfA; }\n", ""]);
+	exports.push([module.id, "* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: 'Roboto', sans-serif; }\n\n.side-nav li {\n  padding: 0; }\n\n.app {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center; }\n\n.header {\n  -webkit-flex-wrap: nowrap;\n      -ms-flex-wrap: nowrap;\n          flex-wrap: nowrap;\n  padding-top: 8px;\n  padding-bottom: 8px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  border-bottom: 1px solid #e1e1e1;\n  background-color: #fAfAfA; }\n", ""]);
 
 /***/ },
 /* 218 */
@@ -25752,9 +25748,9 @@
 	      React.createElement(Header, null),
 	      React.createElement(Favicon, { url: faviconUrl }),
 	      React.createElement(
-	        'div',
-	        { className: 'Content' },
-	        this.props.children || React.createElement(Content, null)
+	        Content,
+	        null,
+	        this.props.children
 	      )
 	    );
 	  }
@@ -26583,22 +26579,28 @@
 
 	'use strict';
 	
-	var React = __webpack_require__(26);
+	var _interopRequireDefault = __webpack_require__(260)['default'];
 	
-	module.exports = React.createClass({
+	var _react = __webpack_require__(26);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(2);
+	
+	module.exports = _react2['default'].createClass({
 	
 	  displayName: 'Header',
 	
 	  render: function render() {
-	    return React.createElement(
+	    return _react2['default'].createElement(
 	      'nav',
 	      { className: 'blue darken-3' },
-	      React.createElement(
+	      _react2['default'].createElement(
 	        'div',
 	        { className: 'nav-wrapper' },
-	        React.createElement(
-	          'a',
-	          { href: '#', className: 'brand-logo center' },
+	        _react2['default'].createElement(
+	          _reactRouter.Link,
+	          { to: '/', className: 'brand-logo center' },
 	          'Caleb Morris'
 	        )
 	      )

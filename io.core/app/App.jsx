@@ -15,9 +15,9 @@ module.exports = React.createClass({
       <div>
         <Header />
         <Favicon url={ faviconUrl }/>
-        <div className="Content">
-          {this.props.children || <Content />}
-        </div>
+        <Content>
+          {this.props.children}
+        </Content>
       </div>
     );
   },

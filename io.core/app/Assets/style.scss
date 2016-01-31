@@ -6,6 +6,10 @@ body {
 	font-family: 'Roboto', sans-serif;
 }
 
+.side-nav li {
+	padding: 0;
+}
+
 .app {
 	display: flex;
 	flex-direction: column;

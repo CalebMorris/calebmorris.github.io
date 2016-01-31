@@ -11,9 +11,7 @@ var Projects = require('./Components/Projects.jsx');
 React.render(
   <Router history={hashHistory}>
     <Route path="/" component={App}>
-      <Route component={Content}>
-        <Route path="projects" component={Projects} />
-      </Route>
+      <Route path="projects" component={Projects} />
 
       <Route path="*" component={NoMatch} />
     </Route>

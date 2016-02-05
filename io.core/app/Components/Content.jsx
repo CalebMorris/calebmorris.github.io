@@ -47,7 +47,7 @@ module.exports = React.createClass({
 
         <div className="row">
 
-          <div className="col s10 offset-s2">
+          <div className="col s10 offset-s2 content">
 
             {this.props.children}
 

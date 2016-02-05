@@ -8,7 +8,7 @@ module.exports = React.createClass({
 
   render: function () {
     return (
-      <nav className='blue darken-3'>
+      <nav>
         <div className='nav-wrapper'>
           <Link to='/' className='brand-logo center'>
             {'Caleb Morris'}

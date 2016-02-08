@@ -1,4 +1,5 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var webpack = require('webpack');
 
 module.exports = {
   loaders: [
@@ -31,7 +32,14 @@ module.exports = {
   indexPagePlugin: new HtmlWebpackPlugin({
     inject: true,
     title: 'My Github.IO Page',
-    filename: 'index.html',
-    template: './app/index_template.html'
+    filename: './index.html',
+    template: './app/index_template.html',
+    files: {
+      js: [ './bundle.js' ],
+    },
+  }),
+
+  fetchShimPlugin: new webpack.ProvidePlugin({
+    'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
   }),
 }

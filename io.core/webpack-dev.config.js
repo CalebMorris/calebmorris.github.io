@@ -18,8 +18,8 @@ module.exports = {
     './app/main.jsx'
   ],
   output: {
-    path: './build',
-    filename: 'bundle.js'
+    path: '../',
+    filename: './bundle.js'
   },
   devtool: 'eval',
   devServer: {
@@ -32,6 +32,7 @@ module.exports = {
     loaders: commonConfig.loaders.concat(devLoaders)
   },
   plugins: [
-    commonConfig.indexPagePlugin
+    commonConfig.indexPagePlugin,
+    commonConfig.fetchShimPlugin,
   ],
 };

@@ -8,7 +8,7 @@ module.exports = {
     './app/main.jsx',
   ],
   output: {
-    path: './build',
+    path: '../',
     filename: './bundle.js',
   },
   devtool:'source-map',

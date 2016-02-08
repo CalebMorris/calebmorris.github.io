@@ -5,7 +5,7 @@ var cors = require('cors');
 
 var app = express();
 
-var static_path = path.join(__dirname, './../build');
+var static_path = path.join(__dirname, './../');
 
 app.enable('trust proxy');
 
@@ -18,7 +18,7 @@ app.get('/api/currentTime', cors(), function(req, res) {
 
 app.route('/').get(function(req, res) {
     res.header('Cache-Control', "max-age=60, must-revalidate, private");
-    res.sendFile('index.html', {
+    res.sendFile('./index.html', {
         root: static_path
     });
 });

@@ -30,9 +30,12 @@
     "classnames": "^2.2.3",
     "css-loader": "^0.14.5",
     "expect": "^1.6.0",
+    "exports-loader": "^0.6.2",
+    "fetch-polyfill": "^0.8.2",
     "file-loader": "^0.8.4",
     "html-webpack-plugin": "^1.5.2",
     "image-webpack-loader": "^1.6.1",
+    "imports-loader": "^0.6.5",
     "karma": "^0.12.36",
     "karma-chrome-launcher": "^0.1.12",
     "karma-cli": "0.0.4",
@@ -52,6 +55,7 @@
     "sinon": "^1.15.3",
     "style-loader": "^0.12.3",
     "webpack": "^1.9.11",
-    "webpack-dev-server": "^1.9.0"
+    "webpack-dev-server": "^1.9.0",
+    "whatwg-fetch": "^0.11.0"
   }
 }

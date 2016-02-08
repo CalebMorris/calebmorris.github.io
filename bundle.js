@@ -25440,7 +25440,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(218)();
-	exports.push([module.id, "* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: 'Roboto', sans-serif; }\n\n.side-nav li {\n  padding: 0; }\n\n.app {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center; }\n\n.header {\n  -webkit-flex-wrap: nowrap;\n      -ms-flex-wrap: nowrap;\n          flex-wrap: nowrap;\n  padding-top: 8px;\n  padding-bottom: 8px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  border-bottom: 1px solid #e1e1e1;\n  background-color: #fAfAfA; }\n", ""]);
+	exports.push([module.id, "* {\n  box-sizing: border-box; }\n\nbody {\n  background: #f5f5f5;\n  font-family: 'Roboto', sans-serif; }\n\n.nav {\n  background-color: #009688; }\n\n.nav-wrapper {\n  background-color: #26a69a; }\n\n.content {\n  margin: 1rem;\n  padding: 1rem;\n  padding-top: 20px; }\n\n.side-nav {\n  background-color: #fafafa; }\n  .side-nav li.active {\n    background: #4db6ac; }\n  .side-nav li {\n    background: #eeeeee;\n    padding: 0; }\n    .side-nav li :hover {\n      background: #b2dfdb; }\n\n.side-nav .collapsible-body li a {\n  margin: 0;\n  padding: 0 1rem 0 2rem; }\n\n.app {\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center; }\n\n.header {\n  -webkit-flex-wrap: nowrap;\n      -ms-flex-wrap: nowrap;\n          flex-wrap: nowrap;\n  padding-top: 8px;\n  padding-bottom: 8px;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-direction: row;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  border-bottom: 1px solid #e1e1e1; }\n", ""]);
 
 /***/ },
 /* 218 */
@@ -25867,7 +25867,7 @@
 	        { className: 'row' },
 	        _react2['default'].createElement(
 	          'div',
-	          { className: 'col s10 offset-s2' },
+	          { className: 'col s10 offset-s2 content' },
 	          this.props.children
 	        )
 	      )
@@ -26594,7 +26594,7 @@
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      'nav',
-	      { className: 'blue darken-3' },
+	      null,
 	      _react2['default'].createElement(
 	        'div',
 	        { className: 'nav-wrapper' },

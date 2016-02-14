@@ -9,7 +9,7 @@
     "dev": "nodemon server/index.js --watch server & webpack-dev-server --config ./webpack-dev.config.js --hot --progress --colors --content-base .",
     "build": "./node_modules/.bin/webpack --config ./webpack-prod.config.js --progress --colors",
     "start": "node server/index.js",
-    "gen-content-listings": "./node_modules/.bin/json-dir-listing -R -s 0 ../Content/",
+    "gen-content-listings": "./node_modules/.bin/json-dir-listing -R -s 1 ../Content/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

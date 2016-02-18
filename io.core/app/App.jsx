@@ -1,5 +1,6 @@
 var React = require('react');
 
+import NavMenu from './Components/NavMenu.jsx';
 var Content = require('./Components/Content.jsx');
 var Header = require('./Components/Header.jsx');
 var Favicon = require('react-favicon');
@@ -14,8 +15,9 @@ module.exports = React.createClass({
     return (
       <div>
         <Header />
+        <NavMenu />
         <Favicon url={ faviconUrl }/>
-        <Content>
+        <Content {...this.props}>
           {this.props.children}
         </Content>
       </div>

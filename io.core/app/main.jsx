@@ -5,7 +5,6 @@ import { Router, Route, IndexRoute, Link, IndexLink, hashHistory } from 'react-r
 
 var App = require('./App.jsx');
 var NoMatch = require('./Components/NoMatch.jsx');
-var Content = require('./Components/Content.jsx');
 var Projects = require('./Components/Projects.jsx');
 
 React.render(

@@ -1,73 +1,108 @@
-var React = require('react');
+import React from 'react';
+import { Link } from 'react-router';
 
-import { Link } from 'react-router'
+function normalizeNavLink(filename) {
+  let splits = filename.split('.');
+  splits.pop();
+  return splits.join('.');
+}
 
-const itemPropType = React.PropTypes.shape({
-  isActive : React.PropTypes.bool,
-  text : React.PropTypes.string.isRequired,
-  link : React.PropTypes.string.isRequired,
-}).isRequired;
+// applyIsActiveToLinks : function(menus) {
+//   if (! menus) {
+//     return menus;
+//   }
+//
+//   const isActive = (url) => {
+//     return url && this.context.router.isActive(url);
+//   };
+//
+//   for (var menu of menus) {
+//     menu.header.isActive = isActive(menu.header.link);
+//     // if (submenu) {
+//     //   for(var submenu of menu.subitems) {
+//     //     submenu.isActive = isActive(submenu.link);
+//     //   }
+//     // }
+//   }
+//
+//   return menus;
+// },
 
-function createMenuLists(menus) {
-  return menus.map((menu) => {
-    var menuItems = [];
+function createNavFromListings(listing) {
+  if (! listing || ! listing.children) {
+    return [];
+  }
 
-    if (menu.header.isActive) {
-      menuItems.push(
+  return listing.children.map((child) => {
+    if (child.type !== 'folder') return null;
+
+    const subChildren = child.children.map((subChild) => {
+      if (subChild.name === 'listing.json' || subChild.type === 'folder') return null;
+      return (
         <li className='bold active'>
-          <Link to={menu.header.link} className='waves-effect waves-teal'>{menu.header.text}</Link>
+          <Link to={subChild.path} className='waves-effect waves-teal'>{normalizeNavLink(subChild.name)}</Link>
         </li>
       );
+    }).filter(x => !!x);
 
-      const childItems = menu.subitems.map((item) => {
-        return (
-          <li>
-            <Link to={item.link} className={'waves-effect waves-teal' + item.isActive ? ' active' : ''}>{item.text}</Link>
-          </li>
-        );
-      });
-
-      menuItems.push(
+    return (
+      <div>
+        <li className='bold active'>
+          <Link to={child.path} className='waves-effect waves-teal'>{child.name}</Link>
+        </li>
         <div className="collapsible-body" style={{ display : 'block' }}>
-          <ul>{childItems}</ul>
+          <ul>{subChildren}</ul>
         </div>
-      );
-      
-    } else {
-      menuItems.push(
-        <li className='bold'>
-          <Link to={menu.header.link} className='waves-effect waves-teal'>{menu.header.text}</Link>
-        </li>
-      );
-    }
-
-    return menuItems;
-  });
+      </div>
+    );
+  }).filter(x => !!x);
 }
 
 module.exports = React.createClass({
-  displayName: 'NavMenu',
+  displayName : 'NavMenu',
 
-  propTypes : {
-    menus : React.PropTypes.arrayOf(
-      React.PropTypes.shape({
-        header : itemPropType,
-        subitems : React.PropTypes.arrayOf(itemPropType).isRequired
-      }).isRequired,
-    ).isRequired,
+  getInitialState : function() {
+    return { listing : null };
   },
 
-  render: function () {
+  componentWillMount : function() {
+    return fetch('/Content/listing.json')
+    .then((response) => {
+      return response.text();
+    })
+    .then((body) => {
+      let listing = JSON.parse(body);
+      this.setState({ listing });
+    })
+    .catch((err) => {
+      console.error('err', err);
+    });
+  },
 
-    const menuList = createMenuLists(this.props.menus);
+  render : function() {
+
+    if (this.state.listing === null) {
+      return (
+        <div className="side-nav fixed">
+          <div className="center">
+          {'Loading Navigation Contents'}
+          </div>
+          <div className='center'>
+            <i className="fa fa-refresh fa-spin fa-3x"></i>
+          </div>
+        </div>
+      );
+    }
+
+    const menus = createNavFromListings(this.state.listing);
 
     return (
       <div>
         <ul className="side-nav fixed">
-          {menuList}
+          {menus}
         </ul>
       </div>
     );
-  }
+  },
 
 });

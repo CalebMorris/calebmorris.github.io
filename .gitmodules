@@ -1,0 +1,3 @@
+[submodule "react-moment-proptypes-tests"]
+	path = react-moment-proptypes-tests
+	url = https://github.com/CalebMorris/react-moment-proptypes-tests

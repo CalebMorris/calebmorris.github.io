@@ -14,7 +14,6 @@ function theEnd() {
   imageIndices
     .map(i => '.image' + i)
     .map(className => {
-      console.log(className)
       $(className).addClass('theEndOrb')
         .addClass(className.slice(1) + 'Final')
         .removeClass(className.slice(1))
@@ -30,14 +29,28 @@ function makeReplayVisibleIfPastTime() {
     console.error('Unable to find JQuery. Ensure it is installed and loaded');
     return;
   }
-  var now = (new Date()).toISOString()
+  var now = new Date().toISOString()
   if (now > liftOff.toISOString()) {
     $(endButtonId).removeClass('bg-transparent').removeClass('hidden-end-button')
   }
 }
 
+var maxTimeout = 2147483647
+function isItTimeForTheEnd() {
+  var millisToEnd = liftOff - Date.now()
+  if (millisToEnd > 0) {
+    if (millisToEnd > maxTimeout) {
+      setTimeout(isItTimeForTheEnd, maxTimeout);
+    } else {
+      var whenToEnd = millisToEnd - 9 * 1000
+      setTimeout(theEnd, whenToEnd);
+    }
+  }
+}
+
 function startCountdown() {
   $('#countdown-text').countdown({until: liftOff});
+  isItTimeForTheEnd();
 }
 
 $(document).ready(() => {
@@ -46,7 +59,6 @@ $(document).ready(() => {
   $('#trigger-end-button').click(() => {
     theEnd();
     var tenSecondsRemaining = new Date(new Date().getTime() + 10 * 1000);
-    console.log('when', tenSecondsRemaining)
     $('#countdown-text').countdown('destroy')
     $('#countdown-text').countdown({until: tenSecondsRemaining});
   })

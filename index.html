@@ -10,7 +10,10 @@
     <link rel="stylesheet" type="text/css" href="assets/css/jquery.countdown.css"> 
     <script type="text/javascript" src="assets/js/jquery.plugin.min.js"></script> 
     <script type="text/javascript" src="assets/js/jquery.countdown.min.js"></script>
+    <script type="text/javascript" src="assets/js/final-end.js"></script>
     <link rel="stylesheet" type="text/css" href="assets/css/reaper-countdown.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/reaper-animations.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
   </head>
   <body style="background-color: 615699;">
     <!-- Hello There! 🐢 -->
@@ -36,9 +39,8 @@
         11 Days, 29 Minutes, and 20 Seconds
       </h2>
     </div>
-    <script>
-      var liftOff = new Date('2021-11-02T00:00:00-0500')
-      $('#countdown-text').countdown({until: liftOff});
-    </script>
+    <div id="trigger-end">
+      <button id="trigger-end-button" type="button" class="btn btn-dark bg-transparent hidden-end-button">Replay the END</button>
+    </div>
   </body>
 </html>

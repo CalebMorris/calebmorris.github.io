@@ -1,5 +1,5 @@
 
-var liftOff = new Date('2021-11-02T00:00:01-0500')
+var liftOff = new Date('2021-11-02T00:00:01-0400')
 var endButtonId = '#trigger-end-button'
 
 function theEnd() {

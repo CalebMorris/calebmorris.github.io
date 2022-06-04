@@ -1,5 +1,5 @@
 
-var liftOff = new Date('2021-11-02T00:00:01-0400')
+var liftOff = new Date('2022-07-05T00:00:01-0500')
 var endButtonId = '#trigger-end-button'
 
 function theEnd() {
@@ -54,12 +54,12 @@ function startCountdown() {
 }
 
 $(document).ready(() => {
-  makeReplayVisibleIfPastTime();
+  // makeReplayVisibleIfPastTime();
   startCountdown();
-  $('#trigger-end-button').click(() => {
-    theEnd();
-    var tenSecondsRemaining = new Date(new Date().getTime() + 10 * 1000);
-    $('#countdown-text').countdown('destroy')
-    $('#countdown-text').countdown({until: tenSecondsRemaining});
-  })
+  // $('#trigger-end-button').click(() => {
+  //   theEnd();
+  //   var tenSecondsRemaining = new Date(new Date().getTime() + 10 * 1000);
+  //   $('#countdown-text').countdown('destroy')
+  //   $('#countdown-text').countdown({until: tenSecondsRemaining});
+  // })
 })

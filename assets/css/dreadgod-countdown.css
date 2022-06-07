@@ -1,18 +1,22 @@
 .component {
-  width: 42.2vh;
-  height: 42.2vh;
+  width: 45vh;
   position: fixed;
-  top: 31.65vh;
+  top: 30.75vh;
   left: 50%;
-  margin-left: -21.35vh;
+  margin-left: -20.5vh;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  aspect-ratio: 1/1;
+  opacity: 1;
+  filter: brightness(100%);
 }
 .centered-back {
   position: fixed;
-  width: 53.3vh;
-  height: 80vh;
-  top: 5vh;
+  height: 90vh;
   left: 50%;
   margin-left: -26.75vh;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 #will-wight-tag {
   width: 50vh;

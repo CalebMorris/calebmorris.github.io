@@ -1,3 +1,6 @@
 [submodule "react-moment-proptypes-tests"]
 	path = react-moment-proptypes-tests
 	url = https://github.com/CalebMorris/react-moment-proptypes-tests
+[submodule "tools/animate-time-points-on-picture"]
+	path = tools/animate-time-points-on-picture
+	url = git@github.com:CalebMorris/animate-time-points-on-picture.git

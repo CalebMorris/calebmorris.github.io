@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat UI — CSS Animation Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    /* =============================================
+       CHAT UI — CSS Animation Demo
+       Click ⋯ to trigger the glass panel effect
+       ============================================= */
+
+    /* --- Reset & Base --- */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* --- Design Tokens (YouTube dark chat) --- */
+    :root {
+      --bg:             #181818;
+      --surface:        #0f0f0f;
+      --surface-alt:    #212121;
+      --border:         #3f3f3f;
+      --accent:         #3ea6ff;
+      --accent-dim:     #2d8de0;
+      --text-primary:   #f1f1f1;
+      --text-secondary: #aaaaaa;
+      --bubble-in:      #272727;
+      --bubble-out:     #065fd4;
+      --green:          #2ba640;
+
+      --radius-sm: 2px;
+      --radius-md: 18px;
+      --radius-lg: 4px;
+
+      --font-ui:   'Roboto', sans-serif;
+      --font-mono: 'Roboto Mono', monospace;
+
+      --shadow:      0 4px 24px rgba(0, 0, 0, 0.6);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    body {
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: var(--font-ui);
+      gap: 20px;
+    }
+
+    .demo-hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+    }
+
+    /* --- Shell --- */
+    .chat-shell {
+      width: 380px;
+      height: 620px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    /* --- Header --- */
+    .chat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-alt);
+      flex-shrink: 0;
+    }
+
+    .chat-header__avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .avatar-dot {
+      position: absolute;
+      bottom: 1px;
+      right: 1px;
+      width: 10px;
+      height: 10px;
+      background: var(--green);
+      border-radius: 50%;
+      border: 2px solid var(--surface-alt);
+      animation: pulse-ring 2.4s ease-out infinite;
+    }
+
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0   rgba(43, 166, 64, 0.6); }
+      70%  { box-shadow: 0 0 0 6px rgba(43, 166, 64, 0); }
+      100% { box-shadow: 0 0 0 0   rgba(43, 166, 64, 0); }
+    }
+
+    .chat-header__meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .chat-header__name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: 0.01em;
+    }
+
+    .chat-header__status {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--green);
+      letter-spacing: 0.05em;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .icon-btn:hover {
+      color: var(--text-primary);
+      background: var(--border);
+    }
+
+    /* --- Messages wrapper --- */
+    .chat-messages-wrap {
+      flex: 1;
+      position: relative;
+      min-height: 0;
+    }
+
+    /* --- Glass pane ---
+       Two background layers:
+         1. Sheen — a narrow bright band that travels bottom to top
+         2. Base tint — the frosted glass surface (static)
+
+       background-size makes the sheen gradient 3× taller than the
+       element so it has room to travel via background-position.    */
+    .chat-glass {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0)    0%,
+          rgba(255, 255, 255, 0)    40%,
+          rgba(255, 255, 255, 0.13) 48%,
+          rgba(255, 255, 255, 0.22) 50%,
+          rgba(255, 255, 255, 0.13) 52%,
+          rgba(255, 255, 255, 0)    60%,
+          rgba(255, 255, 255, 0)    100%
+        ),
+        linear-gradient(
+          160deg,
+          rgba(255, 255, 255, 0.05) 0%,
+          rgba(255, 255, 255, 0.02) 40%,
+          rgba(15,  15,  15,  0.18) 100%
+        );
+      background-size: 100% 300%, 100% 100%;
+      background-position: 0% -20%, 0% 0%;
+      background-repeat: no-repeat;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      opacity: 0;
+    }
+
+    .chat-glass.is-active {
+      animation:
+        glass-reveal  2.6s ease forwards,
+        sheen-travel  2.6s ease forwards;
+    }
+
+    @keyframes glass-reveal {
+      0%   { opacity: 0; }
+      20%  { opacity: 1; }
+      70%  { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes sheen-travel {
+      0%   { background-position: 0% -20%,  0% 0%; }
+      15%  { background-position: 0% -20%,  0% 0%; }
+      75%  { background-position: 0% 120%,  0% 0%; }
+      100% { background-position: 0% 120%,  0% 0%; }
+    }
+
+    /* --- Messages --- */
+    .chat-messages {
+      height: 100%;
+      overflow-y: auto;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .chat-messages::-webkit-scrollbar       { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track  { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 2px; }
+
+    .msg {
+      display: flex;
+      flex-direction: column;
+      max-width: 78%;
+      gap: 4px;
+      opacity: 0;
+      animation: msg-in 0.4s var(--ease-spring) forwards;
+      animation-delay: calc(var(--i, 0) * 70ms);
+    }
+
+    @keyframes msg-in {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg:nth-child(1) { --i: 1; }
+    .msg:nth-child(2) { --i: 2; }
+    .msg:nth-child(3) { --i: 3; }
+    .msg:nth-child(4) { --i: 4; }
+    .msg:nth-child(5) { --i: 5; }
+    .msg:nth-child(6) { --i: 6; }
+    .msg:nth-child(7) { --i: 7; }
+    .msg:nth-child(8) { --i: 8; }
+
+    .msg--in  { align-self: flex-start; align-items: flex-start; }
+    .msg--out { align-self: flex-end;   align-items: flex-end; }
+
+    .msg__bubble {
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--text-primary);
+      transition: transform 0.2s var(--ease-spring);
+    }
+
+    .msg__bubble:hover { transform: scale(1.02); }
+
+    .msg--in  .msg__bubble {
+      background: var(--bubble-in);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: var(--radius-sm);
+    }
+
+    .msg--out .msg__bubble {
+      background: var(--bubble-out);
+      border-bottom-right-radius: var(--radius-sm);
+    }
+
+    .msg__time {
+      font-size: 10.5px;
+      font-family: var(--font-mono);
+      color: var(--text-secondary);
+      padding: 0 4px;
+    }
+
+    /* --- Input Footer --- */
+    .chat-input {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      background: var(--surface-alt);
+      flex-shrink: 0;
+    }
+
+    .input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 8px 8px 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-wrap:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(62, 166, 255, 0.15);
+    }
+
+    .input-field {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+
+    .input-field::placeholder { color: var(--text-secondary); }
+
+    .send-btn {
+      width: 34px;
+      height: 34px;
+      background: var(--accent);
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: white;
+      flex-shrink: 0;
+      transition: background 0.15s, transform 0.2s var(--ease-spring);
+    }
+
+    .send-btn svg {
+      width: 15px;
+      height: 15px;
+      transform: translateX(1px);
+    }
+
+    .send-btn:hover  { background: var(--accent-dim); transform: scale(1.1); }
+    .send-btn:active { transform: scale(0.93); }
+  </style>
+</head>
+<body>
+
+  <p class="demo-hint">click ⋯ to trigger the glass effect</p>
+
+  <div class="chat-shell">
+
+    <header class="chat-header">
+      <div class="chat-header__avatar">
+        <span class="avatar-dot"></span>
+      </div>
+      <div class="chat-header__meta">
+        <span class="chat-header__name">Nova</span>
+        <span class="chat-header__status">online</span>
+      </div>
+      <div class="chat-header__actions">
+        <button class="icon-btn" id="glass-btn">⋯</button>
+      </div>
+    </header>
+
+    <div class="chat-messages-wrap">
+      <div class="chat-glass"></div>
+      <div class="chat-messages" id="messages">
+
+        <div class="msg msg--in">
+          <div class="msg__bubble">Hey! Did you catch the deploy going out tonight?</div>
+          <time class="msg__time">9:41 AM</time>
+        </div>
+        <div class="msg msg--out">
+          <div class="msg__bubble">Yeah, staging looks clean. Should be smooth.</div>
+          <time class="msg__time">9:42 AM</time>
+        </div>
+        <div class="msg msg--in">
+          <div class="msg__bubble">Nice. I'll keep an eye on the logs around midnight just in case 🔍</div>
+          <time class="msg__time">9:43 AM</time>
+        </div>
+        <div class="msg msg--out">
+          <div class="msg__bubble">Appreciate it. Ping me if anything looks off.</div>
+          <time class="msg__time">9:44 AM</time>
+        </div>
+        <div class="msg msg--in">
+          <div class="msg__bubble">Will do. Also — we should talk about the rate limiting issue on the API. It bit us last sprint.</div>
+          <time class="msg__time">9:45 AM</time>
+        </div>
+        <div class="msg msg--out">
+          <div class="msg__bubble">100%. Let's add it to the retro agenda.</div>
+          <time class="msg__time">9:46 AM</time>
+        </div>
+        <div class="msg msg--in">
+          <div class="msg__bubble">Done ✅</div>
+          <time class="msg__time">9:46 AM</time>
+        </div>
+
+      </div>
+    </div>
+
+    <footer class="chat-input">
+      <div class="input-wrap">
+        <input class="input-field" type="text" placeholder="Type a message…" />
+        <button class="send-btn">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    const btn      = document.getElementById('glass-btn');
+    const glass    = document.querySelector('.chat-glass');
+    const messages = document.getElementById('messages');
+
+    const messageSets = [
+      [
+        { out: false, text: "Hey! Did you catch the deploy going out tonight?" },
+        { out: true,  text: "Yeah, staging looks clean. Should be smooth." },
+        { out: false, text: "Nice. I'll keep an eye on the logs around midnight just in case 🔍" },
+        { out: true,  text: "Appreciate it. Ping me if anything looks off." },
+        { out: false, text: "Will do. Also — we should talk about the rate limiting issue on the API. It bit us last sprint." },
+        { out: true,  text: "100%. Let's add it to the retro agenda." },
+        { out: false, text: "Done ✅" },
+      ],
+      [
+        { out: false, text: "morning! how's the new setup running?" },
+        { out: true,  text: "surprisingly well. ollama pulled the model overnight, no issues" },
+        { out: false, text: "nice. GPU temps ok?" },
+        { out: true,  text: "sitting around 68°C under load, pretty happy with that" },
+        { out: false, text: "that's solid. what are you running inference on?" },
+        { out: true,  text: "llama3 8B for now, trying mistral next" },
+        { out: false, text: "let me know how mistral feels on longer context 👀" },
+      ],
+      [
+        { out: true,  text: "just pushed the animation branch" },
+        { out: false, text: "ooh nice, pulling it now" },
+        { out: false, text: "ok the sheen effect is really satisfying" },
+        { out: true,  text: "right?? took a while to get the timing right" },
+        { out: false, text: "what's the trick with the background-position?" },
+        { out: true,  text: "oversized background-size + animating the Y position" },
+        { out: false, text: "genius. stealing this pattern 😅" },
+      ],
+    ];
+
+    let currentSet = 0;
+
+    function randomTime() {
+      const h = String(Math.floor(Math.random() * 12) + 1);
+      const m = String(Math.floor(Math.random() * 60)).padStart(2, '0');
+      return `${h}:${m} ${Math.random() > 0.5 ? 'AM' : 'PM'}`;
+    }
+
+    function buildMessages(set) {
+      return set.map((msg, i) => `
+        <div class="msg ${msg.out ? 'msg--out' : 'msg--in'}" style="--i: ${i + 1}">
+          <div class="msg__bubble">${msg.text}</div>
+          <time class="msg__time">${randomTime()}</time>
+        </div>
+      `).join('');
+    }
+
+    // 70% of 2.6s = exactly when glass-reveal starts fading out
+    const SWAP_DELAY = 2600 * 0.70;
+    let swapTimer = null;
+
+    btn.addEventListener('click', () => {
+      clearTimeout(swapTimer);
+
+      glass.classList.remove('is-active');
+      void glass.offsetWidth; // force reflow to restart animation
+      glass.classList.add('is-active');
+
+      swapTimer = setTimeout(() => {
+        currentSet = (currentSet + 1) % messageSets.length;
+        messages.innerHTML = buildMessages(messageSets[currentSet]);
+      }, SWAP_DELAY);
+    });
+
+    glass.addEventListener('animationend', () => {
+      glass.classList.remove('is-active');
+    });
+  </script>
+
+</body>
+</html>

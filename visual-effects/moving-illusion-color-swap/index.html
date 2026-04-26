@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotating Snake Illusion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --c0: #000000;
+      --c1: #1a44ff;
+      --c2: #ffffff;
+      --c3: #c8d400;
+    }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #e0ddd6; }
+    #illusion { display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; }
+
+    .back {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      color: rgba(0, 0, 0, 0.35);
+      text-decoration: none;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.85rem;
+      z-index: 10;
+    }
+    .back:hover { color: rgba(0, 0, 0, 0.75); }
+
+    /* ── Palette panel ── */
+    .palette-panel {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+    }
+
+    .palette-swatches {
+      display: flex;
+      gap: 1.25rem;
+      padding: 1rem 1.25rem;
+      background: #0f0f0f;
+      border: 1px solid #3f3f3f;
+      border-radius: 12px;
+    }
+    .palette-swatches[hidden] { display: none; }
+
+    .swatch-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .swatch-wrap span {
+      color: #aaaaaa;
+      font-size: 0.72rem;
+      font-family: 'Roboto', sans-serif;
+      user-select: none;
+    }
+
+    input[type="color"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 2.5rem;
+      height: 2.5rem;
+      border: 2px solid #3f3f3f;
+      border-radius: 50%;
+      cursor: pointer;
+      padding: 3px;
+      background: #1a1a1a;
+      transition: border-color 0.15s;
+    }
+    input[type="color"]:hover,
+    input[type="color"]:focus-visible { border-color: #3ea6ff; outline: none; }
+    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; }
+    input[type="color"]::-moz-color-swatch { border: none; border-radius: 50%; }
+
+    .palette-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      background: #0f0f0f;
+      border: 1px solid #3f3f3f;
+      border-radius: 2rem;
+      color: #aaaaaa;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .palette-toggle:hover { border-color: #3ea6ff; color: #f1f1f1; }
+
+    .chevron { transition: transform 0.2s; flex-shrink: 0; }
+    .palette-toggle[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+
+    /* ── About button ── */
+    .about-btn {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      background: #0f0f0f;
+      border: 1px solid #3f3f3f;
+      border-radius: 2rem;
+      color: #aaaaaa;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .about-btn:hover { border-color: #3ea6ff; color: #f1f1f1; }
+
+    /* ── About modal ── */
+    #about-modal {
+      background: #0f0f0f;
+      border: 1px solid #3f3f3f;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 420px;
+      width: calc(100% - 3rem);
+      color: #f1f1f1;
+      font-family: 'Roboto', sans-serif;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+    }
+    #about-modal[open] {
+      animation: modal-in 0.18s ease;
+    }
+    @keyframes modal-in {
+      from { opacity: 0; transform: translate(-50%, calc(-50% + 8px)); }
+      to   { opacity: 1; transform: translate(-50%, -50%); }
+    }
+    #about-modal::backdrop {
+      background: rgba(0, 0, 0, 0.55);
+      animation: backdrop-in 0.18s ease;
+    }
+    @keyframes backdrop-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 0.9rem;
+      right: 0.9rem;
+      background: none;
+      border: none;
+      color: #aaaaaa;
+      font-size: 1.25rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0.25rem 0.4rem;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .modal-close:hover { color: #f1f1f1; background: #2a2a2a; }
+
+    #about-modal h2 {
+      font-size: 1.15rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: #f1f1f1;
+      padding-right: 1.5rem;
+    }
+    #about-modal p {
+      color: #aaaaaa;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 0.85rem;
+    }
+    #about-modal p:last-of-type { margin-bottom: 1.25rem; }
+    .modal-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: #3ea6ff;
+      font-size: 0.875rem;
+      text-decoration: none;
+    }
+    .modal-link:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .about-btn { bottom: 1rem; left: 1rem; }
+    }
+
+    @media (max-width: 600px) {
+      .palette-panel {
+        bottom: 1rem;
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+        align-items: center;
+      }
+      input[type="color"] { width: 3rem; height: 3rem; }
+      .palette-swatches { gap: 1.5rem; padding: 1rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="back" href="../">&larr; Visual Effects</a>
+
+  <svg id="illusion" xmlns="http://www.w3.org/2000/svg"></svg>
+
+  <button class="about-btn" id="about-btn" aria-haspopup="dialog">About</button>
+
+  <dialog id="about-modal" aria-labelledby="about-title">
+    <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+    <h2 id="about-title">Rotating Snakes</h2>
+    <p>
+      A <em>peripheral drift</em> illusion by
+      <a class="modal-link" href="https://www.ritsumei.ac.jp/~akitaoka/" target="_blank" rel="noopener">Akiyoshi Kitaoka</a>,
+      Professor at Ritsumeikan University, Kyoto. First published in 2003.
+    </p>
+    <p>
+      The image is entirely static — nothing actually moves. The sensation of rotation is
+      triggered by rapid eye movements (saccades). When your gaze shifts, the asymmetric
+      luminance steps in each color band fool peripheral motion detectors in the visual cortex.
+      Adjacent circles use mirrored color spirals, making them appear to spin in opposite directions.
+    </p>
+    <p>
+      Try fixing your gaze on a single point — the motion stops.
+    </p>
+    <a class="modal-link" href="https://www.ritsumei.ac.jp/~akitaoka/rotsnake.gif" target="_blank" rel="noopener">
+      View the original &rarr;
+    </a>
+  </dialog>
+
+  <div class="palette-panel">
+    <div class="palette-swatches" id="swatches" hidden>
+      <div class="swatch-wrap">
+        <span>Dark</span>
+        <input type="color" id="c0" value="#000000">
+      </div>
+      <div class="swatch-wrap">
+        <span>Cool</span>
+        <input type="color" id="c1" value="#1a44ff">
+      </div>
+      <div class="swatch-wrap">
+        <span>Bright</span>
+        <input type="color" id="c2" value="#ffffff">
+      </div>
+      <div class="swatch-wrap">
+        <span>Warm</span>
+        <input type="color" id="c3" value="#c8d400">
+      </div>
+    </div>
+    <button class="palette-toggle" id="toggle" aria-expanded="false" aria-controls="swatches">
+      Colors
+      <svg class="chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+        <path d="M1 5L5 1L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <script>
+    const svg = document.getElementById('illusion');
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+    const COLS  = 4;
+    const ROWS  = 3;
+    const RINGS = 9;
+    const SEGS  = 20;
+
+    const cellW = W / COLS;
+    const cellH = H / ROWS;
+    const R = Math.min(cellW, cellH) / 2;
+
+    function annularSector(cx, cy, r1, r2, a1, a2) {
+      const c1 = Math.cos(a1), s1 = Math.sin(a1);
+      const c2 = Math.cos(a2), s2 = Math.sin(a2);
+      const lg = (a2 - a1) > Math.PI ? 1 : 0;
+      if (r1 < 0.5) {
+        return `M${cx},${cy}L${cx+r2*c1},${cy+r2*s1}A${r2},${r2},0,${lg},1,${cx+r2*c2},${cy+r2*s2}Z`;
+      }
+      return (
+        `M${cx+r2*c1},${cy+r2*s1}` +
+        `A${r2},${r2},0,${lg},1,${cx+r2*c2},${cy+r2*s2}` +
+        `L${cx+r1*c2},${cy+r1*s2}` +
+        `A${r1},${r1},0,${lg},0,${cx+r1*c1},${cy+r1*s1}Z`
+      );
+    }
+
+    function drawCircle(cx, cy, reversed) {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      for (let ring = RINGS - 1; ring >= 0; ring--) {
+        const r1 = R * ring / RINGS;
+        const r2 = R * (ring + 1) / RINGS;
+        for (let seg = 0; seg < SEGS; seg++) {
+          const a1 = (seg / SEGS) * 2 * Math.PI - Math.PI / 2;
+          const a2 = ((seg + 1) / SEGS) * 2 * Math.PI - Math.PI / 2;
+          // Shift color index by ring number to create a helical spiral through the rings.
+          // Reversing the shift direction makes adjacent circles appear to spin opposite ways.
+          const ci = reversed
+            ? ((seg - ring) % 4 + 4) % 4
+            : ((seg + ring) % 4 + 4) % 4;
+          const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          p.setAttribute('d', annularSector(cx, cy, r1, r2, a1, a2));
+          // Use CSS custom property so color updates instantly without redrawing.
+          p.style.fill = `var(--c${ci})`;
+          g.appendChild(p);
+        }
+      }
+      svg.appendChild(g);
+    }
+
+    for (let row = 0; row < ROWS; row++) {
+      for (let col = 0; col < COLS; col++) {
+        const cx = (col + 0.5) * cellW;
+        const cy = (row + 0.5) * cellH;
+        drawCircle(cx, cy, (col + row) % 2 === 1);
+      }
+    }
+
+    // ── Palette controls ──
+    const toggleBtn  = document.getElementById('toggle');
+    const swatchesEl = document.getElementById('swatches');
+    const root       = document.documentElement;
+
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = toggleBtn.getAttribute('aria-expanded') === 'true';
+      toggleBtn.setAttribute('aria-expanded', String(!open));
+      swatchesEl.toggleAttribute('hidden', open);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.palette-panel')) {
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        swatchesEl.setAttribute('hidden', '');
+      }
+    });
+
+    // ── About modal ──
+    const aboutBtn   = document.getElementById('about-btn');
+    const aboutModal = document.getElementById('about-modal');
+    const modalClose = document.getElementById('modal-close');
+
+    aboutBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      aboutModal.showModal();
+    });
+    modalClose.addEventListener('click', () => aboutModal.close());
+    // Clicking the backdrop (the dialog element itself, outside the padding box) closes it.
+    aboutModal.addEventListener('click', (e) => {
+      if (e.target === aboutModal) aboutModal.close();
+    });
+
+    ['c0', 'c1', 'c2', 'c3'].forEach(id => {
+      const input = document.getElementById(id);
+      // 'input' fires continuously on Chrome/Firefox; 'change' catches Safari.
+      input.addEventListener('input',  () => root.style.setProperty(`--${id}`, input.value));
+      input.addEventListener('change', () => root.style.setProperty(`--${id}`, input.value));
+    });
+  </script>
+</body>
+</html>
